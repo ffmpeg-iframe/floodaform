@@ -10,7 +10,7 @@
             let counter = 0;
             let errorcounter = 0;
             const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
-            const validchars = "0123456789abcdefghijklmnopqrstuvwxyz._".split("");
+            const validchars = "0123456789abcdefghijklmnopqrstuvwxyz_".split("");
 
             function incrementDisplay(error) {
                 if (error) {
@@ -50,6 +50,7 @@
                 return mystring;
             }
             const form = document.querySelector("#emulated_form");
+            const forms = [form];
             const name = document.querySelector("#name");
             const email = document.querySelector("#email");
             const address = document.querySelector("#address");
@@ -57,17 +58,23 @@
             const phone = document.querySelector("#phone");
             const age = document.querySelector("#age");
             const bank_name = document.querySelector("#bank_name");
+            const google_abuse = document.querySelector("#google_abuse_global");
+            let turkey = 0;
             const goodfunc = () => {
+                turkey++;
+                chicken = turkey%(forms.length);
                 // let myparams = new URLSearchParams();
-                name.value = (generateRandomLetters() + " " + generateRandomLetters());
-                email.value = (generateRandomString() + "@gmail.com");
-                address.value = (
-                    `${generateRandomString()} ${generateRandomString()} ${generateRandomString()}`);
-                phone.value = (generateRandomPhoneNum());
-                bank_name.value = generateRandomLetters();
-                gender.value = (Math.floor(Math.random() * 2) == 1 ? "F" : "M");
-
-                age.value = (Math.floor(Math.random() * 60 + 15));
+                console.log(chicken);
+                forms[chicken].querySelector(".name").value = (generateRandomLetters() + " " + generateRandomLetters());
+                forms[chicken].querySelector(".email").value = (generateRandomString() + "@gmail.com");
+                forms[chicken].querySelector(".address").value =
+                    `${generateRandomString()} ${generateRandomString()} ${generateRandomString()}`;
+                forms[chicken].querySelector(".phone").value = (generateRandomPhoneNum());
+                forms[chicken].querySelector(".bank_name").value = generateRandomLetters();
+                forms[chicken].querySelector(".gender").value = (Math.floor(Math.random() * 2) == 1 ? "F" :
+                "M");
+                forms[chicken].querySelector(".age").value = (Math.floor(Math.random() * 60 + 15));
+                forms[chicken].querySelector(".google_abuse").value = google_abuse.value;
                 // fetch(url + myparams.toString(), {
                 //     agent,
                 //     headers: {
@@ -87,7 +94,7 @@
                 //         // console.log(res.status);
                 //     }
                 // });
-                form.submit();
+                forms[chicken].submit();
                 incrementDisplay();
             }
             // let myluck = setInterval(goodfunc, 15);
@@ -96,7 +103,20 @@
                 clearInterval(myluck)
             };
             window.start_spam = () => {
-                myluck = setInterval(goodfunc, 15)
+                myluck = setInterval(goodfunc, 100)
+            }
+            for (let x = 0; x < 10; x++) {
+                const new_form = form.cloneNode(true);
+                new_form.target = "form_holder_" + x;
+                forms.push(new_form);
+                document.body.appendChild(new_form);
+            }
+            for (let x = 0; x < 10; x++) {
+                const new_holder = document.querySelector("#form_holder").cloneNode(true);
+                new_holder.id = "form_holder_" + x;
+                new_holder.name = "form_holder_" + x;
+                // forms.push(new_holder);
+                document.body.appendChild(new_holder);
             }
         }
     </script>
@@ -105,17 +125,21 @@
 <body>
     <h1>This will spam form</h1>
     <p id="counter"></p>
+    <label for="google_abuse">Google abuse token</label>
+    <input type="text" name="google_abuse" id="google_abuse_global">
     <form id="emulated_form"
         action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSfClOcYUkbVrJB0GOLedDEDudVI5rd5T6ImKrIgrG0Zb_L3Mg/formResponse"
         target="form_holder" method="GET">
-        <input type="hidden" name="entry.2092238618" id="name">
-        <input type="hidden" name="entry.1556369182" id="email">
-        <input type="hidden" name="entry.479301265" id="address">
-        <input type="hidden" name="entry.2000917308" id="phone">
-        <input type="hidden" name="entry.1578288200" id="gender">
-        <input type="hidden" name="entry.597409508" id="bank" value="YES">
-        <input type="hidden" name="entry.1917187730" id="bank_name">
-        <input type="hidden" name="entry.957297292" id="age">
+        <input type="hidden" name="entry.2092238618" class="name">
+        <input type="hidden" name="entry.1556369182" class="email">
+        <input type="hidden" name="entry.479301265" class="address">
+        <input type="hidden" name="entry.2000917308" class="phone">
+        <input type="hidden" name="entry.1578288200" class="gender">
+        <input type="hidden" name="entry.597409508" class="bank" value="YES">
+        <input type="hidden" name="entry.1917187730" class="bank_name">
+        <input type="hidden" name="entry.957297292" class="age">
+        <!-- <label for="google_abuse">Google abuse token</label> -->
+        <input type="hidden" name="google_abuse" class="google_abuse">
     </form>
     <button onclick="window.start_spam()">start</button>
     <button onclick="window.stop_spam()">stop</button>
