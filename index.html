@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Floods one specific Google Form...
+    </title>
+    <script>
+        onload = () => {
+            let counter = 0;
+            let errorcounter = 0;
+            const alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+            const validchars = "0123456789abcdefghijklmnopqrstuvwxyz._".split("");
+
+            function incrementDisplay(error) {
+                if (error) {
+                    errorcounter++;
+                } else {
+                    counter++;
+                }
+                // process.stdout.clearLine();
+                // process.stdout.cursorTo(0);
+                // process.stdout.write("" + counter + "\t" + errorcounter);
+                document.querySelector("#counter").textContent = "" + counter + "\t" + errorcounter;
+            }
+
+            function generateRandomLetters() {
+                const max_length = Math.floor(Math.random() * 10 + 5);
+                let mystring = "";
+                for (let x = 0; x < max_length; x++) {
+                    mystring += alphabet[Math.floor(Math.random() * alphabet.length)];
+                }
+                return mystring;
+            }
+
+            function generateRandomPhoneNum() {
+                let mystring = "";
+                for (let x = 0; x < 10; x++) {
+                    mystring += Math.floor(Math.random() * 10);
+                }
+                return mystring;
+            }
+
+            function generateRandomString() {
+                const max_length = Math.floor(Math.random() * 30 + 5);
+                let mystring = "";
+                for (let x = 0; x < max_length; x++) {
+                    mystring += validchars[Math.floor(Math.random() * validchars.length)];
+                }
+                return mystring;
+            }
+            const form = document.querySelector("#emulated_form");
+            const name = document.querySelector("#name");
+            const email = document.querySelector("#email");
+            const address = document.querySelector("#address");
+            const gender = document.querySelector("#gender");
+            const phone = document.querySelector("#phone");
+            const age = document.querySelector("#age");
+            const bank_name = document.querySelector("#bank_name");
+            const goodfunc = () => {
+                // let myparams = new URLSearchParams();
+                name.value = (generateRandomLetters() + " " + generateRandomLetters());
+                email.value = (generateRandomString() + "@gmail.com");
+                address.value = (
+                    `${generateRandomString()} ${generateRandomString()} ${generateRandomString()}`);
+                phone.value = (generateRandomPhoneNum());
+                bank_name.value = generateRandomLetters();
+                gender.value = (Math.floor(Math.random() * 2) == 1 ? "F" : "M");
+
+                age.value = (Math.floor(Math.random() * 60 + 15));
+                // fetch(url + myparams.toString(), {
+                //     agent,
+                //     headers: {
+                //         "user-agent": ua,
+                //         cookie: cookie
+                //     },
+                //     redirect: "manual"
+                // }).then(async res => {
+                //     if ( /*res.status == 429 || */ res.status == 302) {
+                //         clearInterval(myluck);
+                //         console.log("");
+                //         console.log(await res.text());
+                //     } else if (res.status == 200) {
+                //         incrementDisplay();
+                //     } else {
+                //         incrementDisplay(true);
+                //         // console.log(res.status);
+                //     }
+                // });
+                form.submit();
+                incrementDisplay();
+            }
+            // let myluck = setInterval(goodfunc, 15);
+            let myluck;
+            window.stop_spam = () => {
+                clearInterval(myluck)
+            };
+            window.start_spam = () => {
+                myluck = setInterval(goodfunc, 15)
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>This will spam form</h1>
+    <p id="counter"></p>
+    <form id="emulated_form"
+        action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSfClOcYUkbVrJB0GOLedDEDudVI5rd5T6ImKrIgrG0Zb_L3Mg/formResponse"
+        target="form_holder" method="GET">
+        <input type="hidden" name="entry.2092238618" id="name">
+        <input type="hidden" name="entry.1556369182" id="email">
+        <input type="hidden" name="entry.479301265" id="address">
+        <input type="hidden" name="entry.2000917308" id="phone">
+        <input type="hidden" name="entry.1578288200" id="gender">
+        <input type="hidden" name="entry.597409508" id="bank" value="YES">
+        <input type="hidden" name="entry.1917187730" id="bank_name">
+        <input type="hidden" name="entry.957297292" id="age">
+    </form>
+    <iframe id="form_holder" name="form_holder">
+    </iframe>
+</body>
+
+</html>
